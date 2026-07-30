@@ -1,5 +1,6 @@
 # 4-Slot Geneva Drive — Parametric Design, 3D Print & Motor Control
 
+"A mechanical engineering and automation project designed, modeled, and programmed by a high school student interested in robotics."
 
 
 A Geneva drive takes one simple, continuous spin and turns it into something far more precise, a series of exact locked steps, with nothing controlling any of it but the shape of the metal itself, no motor deciding when to move, no code deciding when to stop, just pure geometry doing all the work, till the pin lines up again and the whole thing repeats. It's the same mechanism that used to pull film through old movie projectors, one frame at a time, and I wanted to build a real, working version of it myself, from scratch, a 4-slot design, printed in PETG on a Bambu Lab P1S, and eventually driven by a NEMA 17 stepper motor.
