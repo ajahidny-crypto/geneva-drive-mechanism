@@ -58,7 +58,7 @@ The new print worked much better. There was still some grinding during the locki
 
 After that adjustment, the mechanism moved smoothly by hand.
 
-Physical Testing
+##Physical Testing
 
 The final mechanical version was tested by hand.
 
@@ -72,7 +72,7 @@ The printed parts have enough clearance to move without excessive friction.
 
 The final version successfully completes the four-position indexing cycle by hand.
 
-NEMA 17 Version
+##NEMA 17 Version
 
 I also created a modified version of the CAD design for a NEMA 17 stepper motor.
 
