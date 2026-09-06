@@ -1,33 +1,20 @@
-# 4-Slot Geneva Drive — Parametric Design, 3D Print & Motor Control
+# 4-Slot Geneva Drive 
 
-A mechanical engineering project designed, modeled, and programmed by a high school student interested in robotics.
+A mechanical engineering project where I designed, calculated, 3D printed, and tested a four-slot Geneva drive.
 
+The main version of the mechanism is hand-spun. I also modified the CAD files for a NEMA 17 stepper motor, but I have not yet built and tested the motorized version, however, I'm positive it will transition smoothly.
 
-A Geneva drive takes one simple, continuous spin and turns it into something far more precise, a series of exact locked steps, with nothing controlling any of it but the shape of the metal itself, no motor deciding when to move, no code deciding when to stop, just pure geometry doing all the work, till the pin lines up again and the whole thing repeats. It's the same mechanism that used to pull film through old movie projectors, one frame at a time, and I wanted to build a real, working version of it myself, from scratch, a 4-slot design, printed in PETG on a Bambu Lab P1S, and eventually driven by a NEMA 17 stepper motor.
+## What is a Geneva Drive?
 
-## The Design Problem
+A Geneva drive converts continuous rotation into intermittent motion. The driver rotates continuously, while the Geneva wheel moves one position at a time and then locks in place. 
 
-The first set of numbers I started with looked complete, everything filled in, nothing obviously missing, but it turned out to be geometrically impossible, because for a 4-slot Geneva drive, getting the pin to enter the slot cleanly, without any shock or grinding, requires the crank radius to equal the driven wheel's radius exactly, a special case that comes straight out of the fact that sin(45°) and cos(45°) are the same number, and the original spec had that crank radius set to something else entirely, meaning the pin would never have actually reached the slot in the first place.
+I chose to build one because it is a fairly simple mechanism to understand, but even the smallest mathematical  or clearance error can make a big difference once the parts are printed and assembled/
 
-Once I caught that, I rebuilt the whole geometry from the actual trigonometric relationships underneath it, and then went further, cross-checking every dimension that came out of it, the center distance, the slot depth, the locking-disc sizing, against a real, published reference design (the FreeCAD "Geneva Wheel" macro), just to make sure the math lined up with how these things are actually built, not just with itself.
+#Design
 
-## The Harder Problem
+I designed the mechanism in Fusion 360 and printed the parts in PETG on a Bambu Lab P1S.
 
-The part that actually gave me trouble was the locking mechanism, the piece responsible for keeping the star wheel completely still between each step, and my first attempt at solving it seemed to work, I cut a pocket directly into the driver wheel's body, hand-fit it against the star wheel's edge at one specific angle, printed it, and it moved.
-
-Then testing showed the real problem. That pocket only matched the star wheel's curve at the one angle I'd fit it to, since it was shaped around the star wheel's own center, not the driver's, and because the driver spins around a completely different axis, everywhere else in the rotation the two shapes fought each other instead of sliding smoothly, stabbing, dragging, and every so often throwing the pin off just enough to miss the next step entirely.
-
-That sent me back to actually research how real Geneva mechanisms handle this, and it turns out the standard design isn't a recessed cut at all, it's the opposite, a raised, elevated locking disc, a stepped boss built up on the driver's own face, with a crescent-shaped opening cut out of it so the star wheel's corner has room to pass through during engagement. I rebuilt the driver wheel around that idea, and this time sized the opening using actual verified two-circle intersection geometry instead of eyeballing it like before.
-
-The reprint came out close to perfect on the very first try, smooth indexing, just a small bit of grinding during the lock phase, and instead of reshaping the opening again, I traced it back to the wall itself, shaved its diameter down by half a millimeter, and that was it, the grinding was gone.
-
-## Control System
-
-The whole mechanism runs off a NEMA 17 stepper (17HS19-2004S1), controlled through an Arduino and a standard STEP/DIR driver board (A4988/DRV8825), spinning continuously, since the Geneva geometry itself handles all the actual indexing, the motor just needs to keep turning smoothly and nothing more. Full wiring notes and current-limit setup are documented right in the code.
-
-The whole project, CAD files, motor control code, and every bit of build documentation, is published open-source on GitHub.
-
-## Specs
+The design uses four slots, so the Geneva wheel rotates 90° each time it is turned.
 
 | Parameter | Value |
 |---|---|
@@ -40,16 +27,103 @@ The whole project, CAD files, motor control code, and every bit of build documen
 | Design clearance (PETG) | 0.35 mm |
 | Plate thickness | 8.00 mm |
 | Locking wall diameter (as-tuned) | 80.50 mm |
-| Driver motor | NEMA 17 (17HS19-2004S1) |
 
-## Outcome
+The calculations and dimensions are included in the spreadsheet in this repository.
 
-It indexes cleanly through all four positions under motor power, the locking wall holds the star wheel completely still between steps, and there's no drift, no missed indexing, nothing. Full source, the CAD, the formulas, the firmware, all of it, is up on GitHub.
+## Working Through the Geometry
 
-## Tools
+My first set of dimensions had failed.
 
-Fusion 360 · Bambu Lab P1S · PETG · Arduino · FreeCAD (verification) · GitHub
+The crank radius and the Geneva wheel geometry did not allow the pin to reach the slots correctly. After going back through the geometry, I found that the four slot design required the crank radius to match the driven wheel radius.
 
----
+I rebuilt the dimensions using the geometry of a four-slot Geneva mechanism and then checked the results against a published Geneva wheel design from FreeCAD.
 
-*Every derivation, every formula source, and the full interactive calculator are sitting in the accompanying spreadsheet, if you want to go deeper.*
+This was a much better starting point for me.
+
+## The Locking Mechanism
+
+The locking mechanism was the part that was the most tedious.
+
+My first design used a recessed area on the driver wheel to lock the Geneva wheel between rotations. It looked correct at one position, but once I printed it and turned the mechanism, the two parts interfered with each other at the points of rotation.
+
+From what I understood, the problem was that I shaped the locking surface around the wrong center.
+
+I went back to the standard geometry used in Geneva mechanisms and redisgned the 
+
+I went back to the standard geometry used in Geneva mechanisms and redesigned the driver with a raised locking section and an opening for the Geneva wheel to pass through.
+
+I also calculated the opening using the intersection of two circles instead of estimating the shape by eye.
+
+The new print worked much better. There was still some grinding during the locking portion of the motion, so I traced the problem to the clearance around the locking wall. I reduced its diameter by 0.5 mm and printed it again.
+
+After that adjustment, the mechanism moved smoothly by hand.
+
+Physical Testing
+
+The final mechanical version was tested by hand.
+
+I checked that:
+
+The Geneva wheel moves through all four positions.
+The wheel locks between each position.
+The pin enters and leaves the slots without getting stuck.
+The mechanism can complete repeated rotations.
+The printed parts have enough clearance to move without excessive friction.
+
+The final version successfully completes the four-position indexing cycle by hand.
+
+NEMA 17 Version
+
+I also created a modified version of the CAD design for a NEMA 17 stepper motor.
+
+The repository includes:
+
+Modified Fusion 360 assemblies
+STEP files
+STL files
+A preliminary Arduino .ino file
+
+The motorized version is not currently completed or physically tested. The main mechanism in this project is still the hand-spun version.
+
+I included the motor-compatible files because I want to eventually automate the mechanism and test how well the printed Geneva drive performs under continuous motor-driven rotation.
+
+Files
+File	Description
+GenevaCADfile.f3z	Original Fusion 360 assembly
+GenevaCADfiles.step	STEP version of the Geneva drive
+GenevaCADfiles.stl	STL files for 3D printing
+Geneva_Drive_Calculator_1.xlsx	Design calculations and dimensions
+Geneva_Sideview.png	Side view of the design
+Geneva_Topview.png	Top view of the design
+Nema - 17 - Geneva Drive'.stl	Modified STL for NEMA 17 integration
+Nema 17 - Geneva Drive.step	Modified STEP model
+Nema 17 - Geneva Drive.f3z	Modified Fusion 360 assembly
+nema17_geneva_driver.ino	Preliminary Arduino motor-control code
+LICENSE	Project license
+Tools and Materials
+Fusion 360
+Bambu Lab P1S
+PETG
+3D printing
+Excel
+Arduino files for future motor integration
+FreeCAD for checking the Geneva mechanism geometry
+What I Learned
+
+This project taught me that getting the math right is only part of designing a mechanical system.
+
+My first design looked reasonable on paper, but the printed parts showed problems that were not obvious from the original model. I had to go back to the geometry, figure out why the parts were interfering, change the design, print it again, and test it.
+
+The locking mechanism was especially useful because the first version technically looked like it should work, but physical testing showed that it didn't.
+
+That process of designing, printing, testing, finding a problem, and changing the design is what I wanted to document with this project.
+
+Future Plans
+
+The next step is to finish the NEMA 17 version and test the Geneva drive under motor power.
+
+I would also like to experiment with different print clearances and materials to see how they affect friction, movement, and the locking mechanism.
+
+License
+
+This project is open source. See the LICENSE file for the license terms.
