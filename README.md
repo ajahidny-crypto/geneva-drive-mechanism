@@ -82,6 +82,7 @@ This version is not finished or physically tested; the hand-spun drive is still 
 | `Nema 17 - Geneva Drive.f3z` | Modified Fusion 360 assembly |
 | `nema17_geneva_driver.ino` | Preliminary Arduino motor-control code |
 | `LICENSE` | Project license |
+https://drive.google.com/file/d/1QYCTo2pqZkYMUQOoLIcyrTInGY04jebj/view?usp=sharing A Video Demonstration.
 
 ## Tools and materials
 
